@@ -1,4 +1,4 @@
-(ns my-pallet.core
+(ns pallet-smartos-example.core
   (:require pallet.compute
             [pallet.compute.node-list :as node]
             [pallet.action.package :as package]
@@ -7,7 +7,7 @@
             pallet.action.exec-script))
 
 
-(def image "us-east-1/fdea06b0-3f24-11e2-ac50-0b645575ce9d")
+(def image "us-east-1/sdc:sdc:base64:1.8.4")
 
 (comment (def my-data-center
    (pallet.compute/compute-service
@@ -27,7 +27,7 @@
                           :packager :pkgin
                           :node-spec (pallet.core/node-spec
                                       :image {:image-id image
-                                           ;   :os-family  :smartos
+                                      :os-family  :solaris
                                               }
                                     ;  :location {:location-id "us-east-1"}
                                       :hardware {:smallest true}
@@ -35,8 +35,9 @@
                           ;:phases {:configure play-with-packages}
                           ))
 
-(defn my-converge []  (pallet.core/converge test-server :compute (pallet.compute/service
-                                                 :joyent-service)))
+(def compute-service (pallet.compute/service :joyent-service))
+
+(defn my-converge []  (pallet.core/converge test-server :compute compute-service ))
 
 ;; Commented out for now
 (comment (pallet.core/lift

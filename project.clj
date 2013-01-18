@@ -1,4 +1,4 @@
-(defproject my-pallet "0.1.0-SNAPSHOT"
+(defproject pallet-smartos-example "0.1.0-SNAPSHOT"
   :description "Smart-os testing"
   :url "http://example.com/FIXME"
   :license {:name "Eclipse Public License"

@@ -1,4 +1,4 @@
-(ns my-pallet.core-test
+(ns pallet-smartos-example.core-test
   (:use clojure.test
         my-pallet.core))
 
