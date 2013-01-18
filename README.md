@@ -22,10 +22,8 @@ You will need to set up your ~/.pallet/config.clj file correctly.
 
 Then follow the code in the source file.
 
-FIXME
-
 ## License
 
-Copyright © 2013 FIXME
+Copyright © 2013 Ryan Stradling 
 
 Distributed under the Eclipse Public License, the same as Clojure.
