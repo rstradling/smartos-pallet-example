@@ -4,8 +4,7 @@
             [pallet.action.package :as package]
             pallet.core
             pallet.configure
-            pallet.action.exec-script)
-  (:import [org.jclouds.compute.domain NodeState OsFamily OperatingSystem]))
+            pallet.action.exec-script))
 
 
 (def image "us-east-1/sdc:sdc:base64:1.8.4")
@@ -24,8 +23,7 @@
 
 (def with-play
   (pallet.core/server-spec
-   :phases {:configure play-with-packages}
-   ))
+   :phases {:configure play-with-packages}))
 
 (def mynodes
   (pallet.core/node-spec
@@ -40,7 +38,8 @@
   (pallet.core/group-spec "smartos-machines"
                           :extends [with-play]
                           :node-spec mynodes
-                          :packager :pkgin))
+                          ;:packager :pkgin
+                          ))
 
 (def my-compute-service (pallet.compute/service :joyent-service))
 
