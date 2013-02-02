@@ -4,7 +4,8 @@
             [pallet.action.package :as package]
             pallet.core
             pallet.configure
-            pallet.action.exec-script))
+            pallet.action.exec-script)
+  (:import [org.jclouds.compute.domain NodeState OsFamily OperatingSystem]))
 
 
 (def image "us-east-1/sdc:sdc:base64:1.8.4")
@@ -12,7 +13,7 @@
 (comment (def my-data-center
    (pallet.compute/compute-service
     "node-list"
-    :node-list [(node/make-node "smartos1" "smartos-machines" "192.168.1.33" :smartos)])))
+    :node-list [(node/make-node "smartos1" "smartos-machines" "" :smartos)])))
 
 (defn play-with-packages
   "Function to play with pkgin and see if it really works"
@@ -21,29 +22,27 @@
    session
    (package/packages :pkgin ["zsh"])))
 
-(def test-server
+(def with-play
+  (pallet.core/server-spec
+   :phases {:configure play-with-packages}
+   ))
+
+(def mynodes
+  (pallet.core/node-spec
+   :image {:image-id image
+           :os-family :smartos
+           }
+   :location {:location-id "us-east-1"}
+   :hardware {:smallest true}
+   :network {:inbound-ports [22]}))
+
+(def smartos-machines-group
   (pallet.core/group-spec "smartos-machines"
-                          :count 1
-                          :packager :pkgin
-                          :node-spec (pallet.core/node-spec
-                                      :image {:image-id image
-                                      :os-family  :solaris
-                                              }
-                                    ;  :location {:location-id "us-east-1"}
-                                      :hardware {:smallest true}
-                                      :network {:inbound-ports [22]})
-                          ;:phases {:configure play-with-packages}
-                          ))
+                          :extends [with-play]
+                          :node-spec mynodes
+                          :packager :pkgin))
 
-(def compute-service (pallet.compute/service :joyent-service))
+(def my-compute-service (pallet.compute/service :joyent-service))
 
-(defn my-converge []  (pallet.core/converge test-server :compute compute-service ))
-
-;; Commented out for now
-(comment (pallet.core/lift
-  (pallet.core/group-spec
-   "smartos-machines"
-   :phases {:configure play-with-packages})
-  :compute my-data-center
-  :user (pallet.utils/make-user "root")))
-
+(defn my-converge []  (pallet.core/converge  {smartos-machines-group 1}
+                                           :compute my-compute-service ))
