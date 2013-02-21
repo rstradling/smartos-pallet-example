@@ -1,6 +1,6 @@
 # my-pallet
 
-A Clojure example designed to show you how to use pallet 0.7.x/0.7.x-smartos branch 
+A Clojure example designed to show you how to use pallet 0.7.3 with Joyent 
 with SmartOS.  
 
 ## Usage
