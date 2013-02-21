@@ -43,5 +43,5 @@
 
 (def my-compute-service (pallet.compute/service :joyent-service))
 
-(defn my-converge []  (pallet.core/converge  {smartos-machines-group 1}
+(defn my-converge [num]  (pallet.core/converge  {smartos-machines-group num}
                                            :compute my-compute-service ))
